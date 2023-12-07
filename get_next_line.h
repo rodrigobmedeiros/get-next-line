@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:33:38 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/05 08:24:52 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/06 04:47:52 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
@@ -15,7 +15,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE (1)
+#  define BUFFER_SIZE (10)
 # endif
 
 
