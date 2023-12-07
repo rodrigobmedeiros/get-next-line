@@ -1,7 +1,9 @@
-Rodrigo Bernardo Medeiros
-Renata Teixeira de Pontes
-Ezequiel Anselmi
-Quarta linha do meu arquivo
-Quinta linha do meu arquivo
-Sexta linha do meu arquivo
-Setima linha do meu arquivo
+1-linha  %
+2-linha  %
+3-linha  %
+4-linha  %
+5-linha  %
+6-linha  %
+7-linha  %
+8-linha  %
+9-linha  %
