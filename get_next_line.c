@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/07 09:30:04 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/07 09:31:47 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 # include "get_next_line.h"
@@ -50,6 +50,7 @@ char	*get_next_line(int fd)
 	static char	*str;
 	char		*line;
 
+	n_bytes_read = 0; // Soh para ajudar a implementar a ideia q estou pensando.
 	if (!not_first_call)
 	{
 		not_first_call = 1; // defino aqui que nao eh mais a primeira chamada.
