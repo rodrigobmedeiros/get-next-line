@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/12 07:27:47 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/12 08:50:37 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 # include "get_next_line.h"
@@ -16,6 +16,8 @@ int	has_breakline(char *str)
 {
 	int	n;
 
+	if (!str)
+		return (0);
 	n = 0;
 	while (str[n])
 	{
@@ -30,6 +32,8 @@ int	ft_strlen(char *str)
 {
 	int	counter;
 
+	if (!str)
+		return(0);
 	counter = 0;
 	while (str[counter])
 		counter++;
@@ -73,6 +77,29 @@ char	*remove_extracted_line(char *buffer, int len)
 	return (resized_buffer);
 }
 
+char	*resize_buffer(char *buffer)
+{
+	char	*resized_buffer;
+	int		len_buffer;
+	int		n;
+
+	len_buffer = ft_strlen(buffer);
+	resized_buffer = (char *)malloc(sizeof(char) * (len_buffer + BUFFER_SIZE + 1));
+	n = 0;
+	while (n < len_buffer)
+	{
+		resized_buffer[n] = buffer[n];
+		n++;
+	}
+	while (n < len_buffer + BUFFER_SIZE + 1)
+	{
+		resized_buffer[n] = '\0';
+		n++;
+	}
+	free(buffer);
+	return (resized_buffer);
+}
+
 char	*get_next_line(int fd)
 {
 	static int	not_first_call;
@@ -81,11 +108,12 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			len_line;
 
-	n_bytes_read = 0; // Soh para ajudar a implementar a ideia q estou pensando.
+	n_bytes_read = 1;
+
+/*
 	if (!not_first_call)
 	{
-		not_first_call = 1; // defino aqui que nao eh mais a primeira chamada.
-		// Aqui caso seja uma primeira chamada faco a primeira definicao 
+		not_first_call = 1; 
 		buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 		buffer[BUFFER_SIZE] = '\0';
 		n_bytes_read = read(fd, buffer, BUFFER_SIZE);
@@ -95,23 +123,28 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
-
-	len_line = has_breakline(buffer);
-	// Nesse ponto a principio eu tenho uma str com coisa dentro.
-	if (len_line) // esse cara aqui verifica se tem linha dentro.
+*/
+	line = (char *)malloc(sizeof(char) * 1);
+	line = NULL;
+	while ((!line && buffer) || !not_first_call)
 	{
-		line = extract_line(buffer);
-		buffer = remove_extracted_line(buffer, len_line);
-		printf("str: %s\n", buffer);
-		printf("encontrou o breakline\n");
+		not_first_call = 1;
+		len_line = has_breakline(buffer);
+		if (len_line)
+		{
+			line = extract_line(buffer);
+			buffer = remove_extracted_line(buffer, len_line);
+			return (line);
+		}
+		else
+		{	
+			if (n_bytes_read)
+			{
+				buffer = resize_buffer(buffer);
+				n_bytes_read = read(fd, buffer + ft_strlen(buffer), BUFFER_SIZE);
+			}
+		}
 	}
-	// Se nao tiver quebra de linha, tenho que dar o read novamente primeiro redimensionando o buffer e depois passando o ponteiro a partir daquele ponto.
-	// Verifico se na string existe uma linha fechada. Caso exista, eu extraio e retorno ela.
-	// Recalculo a str considerado a linha que removi.
-	// Caso nao exista, faco um read novamente atualizando o malloc com + BUFFER_SIZE e procurando a linha de novo.
-	// Faco esse processo ate que nao tenha mais linhas no meu buffer e quando ler o arquivo este esteja vazio
-	// Dai retorno null.
-	// Lembrar de pensar em uma boa logica para desalocar memoria.
 	free(buffer);	
 	return (line);
 }
@@ -122,8 +155,9 @@ int main()
 	char	*str;
 	
 	fd = open("teste.txt", O_RDONLY);
-	printf("O fd do meu arquivo %d\n", fd);
 	str = get_next_line(fd);
-	printf("%s\n", str);
+	printf("%s", str);
+	str = get_next_line(fd);
+	printf("%s", str);
 	close(fd);
 }
