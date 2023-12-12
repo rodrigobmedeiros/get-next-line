@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/08 08:01:37 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/12 07:27:47 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 # include "get_next_line.h"
@@ -14,13 +14,26 @@
 
 int	has_breakline(char *str)
 {
-	while (*str)
+	int	n;
+
+	n = 0;
+	while (str[n])
 	{
-		if (*str == '\n')
-			return (1);
-		str++;
+		if (str[n] == '\n')
+			return (n + 1);
+		n++;
 	}
 	return (0);
+}
+
+int	ft_strlen(char *str)
+{
+	int	counter;
+
+	counter = 0;
+	while (str[counter])
+		counter++;
+	return (counter);
 }
 
 char	*extract_line(char *str)
@@ -43,14 +56,21 @@ char	*extract_line(char *str)
 	return (line);
 }
 
-char	*remove_extracted_line(static char *buffer, int len)
+char	*remove_extracted_line(char *buffer, int len)
 {
-	(void) len;
+	char	*resized_buffer;
+	int		n;
+
+	resized_buffer = (char *)malloc(sizeof(char) * (ft_strlen(buffer + len) + 1));
+	n = 0;
+	while (buffer[len + n])
+	{
+		resized_buffer[n] = buffer[len + n];
+		n++;
+	}
+	resized_buffer[n] = '\0';
 	free(buffer);
-	buffer = malloc(2 * sizeof(char));
-	buffer[0] = 'X';
-	buffer[1] = '\0';
-	return (buffer);
+	return (resized_buffer);
 }
 
 char	*get_next_line(int fd)
@@ -59,6 +79,7 @@ char	*get_next_line(int fd)
 	int			n_bytes_read;
 	static char	*buffer;
 	char		*line;
+	int			len_line;
 
 	n_bytes_read = 0; // Soh para ajudar a implementar a ideia q estou pensando.
 	if (!not_first_call)
@@ -74,11 +95,13 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
+
+	len_line = has_breakline(buffer);
 	// Nesse ponto a principio eu tenho uma str com coisa dentro.
-	if (has_breakline(buffer)) // esse cara aqui verifica se tem linha dentro.
+	if (len_line) // esse cara aqui verifica se tem linha dentro.
 	{
 		line = extract_line(buffer);
-		remove_extracted_line(buffer, 5);
+		buffer = remove_extracted_line(buffer, len_line);
 		printf("str: %s\n", buffer);
 		printf("encontrou o breakline\n");
 	}
