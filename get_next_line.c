@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/12 08:50:37 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/19 08:23:46 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 # include "get_next_line.h"
@@ -102,33 +102,14 @@ char	*resize_buffer(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static int	not_first_call;
 	int			n_bytes_read;
 	static char	*buffer;
 	char		*line;
 	int			len_line;
 
 	n_bytes_read = 1;
-
-/*
-	if (!not_first_call)
+	while ((!line && buffer) || n_bytes_read)
 	{
-		not_first_call = 1; 
-		buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-		buffer[BUFFER_SIZE] = '\0';
-		n_bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (!n_bytes_read || n_bytes_read == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
-	}
-*/
-	line = (char *)malloc(sizeof(char) * 1);
-	line = NULL;
-	while ((!line && buffer) || !not_first_call)
-	{
-		not_first_call = 1;
 		len_line = has_breakline(buffer);
 		if (len_line)
 		{
@@ -145,8 +126,8 @@ char	*get_next_line(int fd)
 			}
 		}
 	}
-	free(buffer);	
-	return (line);
+	free(buffer);
+	return (NULL);
 }
 
 int main()
@@ -155,6 +136,8 @@ int main()
 	char	*str;
 	
 	fd = open("teste.txt", O_RDONLY);
+	str = get_next_line(fd);
+	printf("%s", str);
 	str = get_next_line(fd);
 	printf("%s", str);
 	str = get_next_line(fd);
