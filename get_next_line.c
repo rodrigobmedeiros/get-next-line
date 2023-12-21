@@ -6,11 +6,10 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/19 08:33:27 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/21 11:46:57 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 # include "get_next_line.h"
-# include <stdio.h>
 
 int	has_breakline(char *str)
 {
@@ -43,12 +42,12 @@ int	ft_strlen(char *str)
 char	*extract_line(char *str)
 {
 	char	*line;
-	int		counter;
+	int	counter;
 
 	counter = 0;
 	while (str[counter] != '\n')
 		counter++;
-	line = (char *)malloc(sizeof(char) * (counter + 2)); // adiciono dois por conta do \n e \0
+	line = (char *)malloc(sizeof(char) * (counter + 2));
 	counter = 0;
 	while (str[counter] != '\n')
 	{
@@ -102,10 +101,10 @@ char	*resize_buffer(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	int			n_bytes_read;
+	int		n_bytes_read;
 	static char	*buffer;
 	char		*line;
-	int			len_line;
+	int		len_line;
 
 	n_bytes_read = 1;
 	while ((!line && *buffer) || n_bytes_read)
@@ -135,9 +134,12 @@ int main()
 	fd = open("teste.txt", O_RDONLY);
 	str = get_next_line(fd);
 	printf("%s", str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	str = get_next_line(fd);
-	printf("%s", str);
+	while (str)
+	{
+		free(str);
+		str = get_next_line(fd);
+		if (str)
+			printf("%s\n", str);
+	}
 	close(fd);
 }
