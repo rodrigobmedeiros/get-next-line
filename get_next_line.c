@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/22 06:55:28 by robernar         ###   ########.fr       */
+/*   Updated: 2023/12/28 06:38:37 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -21,7 +21,7 @@ char	*get_next_line(int fd)
 
 	line = "";
 	n_bytes_read = 1;
-	while ((!line && *buffer) || n_bytes_read)
+	while ((!line && *buffer) || n_bytes_read > 0)
 	{
 		len_line = has_breakline(buffer);
 		if (len_line)
