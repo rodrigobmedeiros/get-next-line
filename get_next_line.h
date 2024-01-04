@@ -18,11 +18,9 @@
 #  define BUFFER_SIZE 10
 # endif
 
-int		has_breakline(char *str);
 int		ft_strlen(char *str);
 char	*get_next_line(int fd);
-char	*extract_line(char *str);
-char	*remove_extracted_line(char *buffer, int len);
-char	*resize_buffer(char *buffer);
+char	*extract_line_with_break(char *str);
+char	*extract_line_with_no_break(char *str);
 
 #endif

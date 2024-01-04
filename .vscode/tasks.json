@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build my program",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "get_next_line.c",
+                "get_next_line_utils.c",
+                "-o",
+                "get_next_line"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

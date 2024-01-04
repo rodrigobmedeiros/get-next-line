@@ -11,21 +11,7 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-int	has_breakline(char *str)
-{
-	int	n;
 
-	if (!str)
-		return (0);
-	n = 0;
-	while (str[n])
-	{
-		if (str[n] == '\n')
-			return (n + 1);
-		n++;
-	}
-	return (0);
-}
 
 int	ft_strlen(char *str)
 {
@@ -39,7 +25,7 @@ int	ft_strlen(char *str)
 	return (counter);
 }
 
-char	*extract_line(char *str)
+char	*extract_line_with_break(char *str)
 {
 	char	*line;
 	int		counter;
@@ -59,46 +45,20 @@ char	*extract_line(char *str)
 	return (line);
 }
 
-char	*remove_extracted_line(char *buffer, int len)
+char	*extract_line_with_no_break(char *str)
 {
-	char	*resized_buffer;
-	int		n;
-	int		resized_len;
+	char	*line;
+	int		len_str;
+	int		i;
 
-	resized_len = ft_strlen(buffer + len) + 1;
-	resized_buffer = (char *)malloc(sizeof(char) * resized_len);
-	n = 0;
-	while (buffer[len + n])
+	len_str = ft_strlen(str);
+	line = (char *)malloc(sizeof(char) * (len_str + 1));
+	i = 0;
+	while (str[i])
 	{
-		resized_buffer[n] = buffer[len + n];
-		n++;
+		line[i] = str[i];
+		i++;
 	}
-	resized_buffer[n] = '\0';
-	free(buffer);
-	return (resized_buffer);
-}
-
-char	*resize_buffer(char *buffer)
-{
-	char	*resized_buffer;
-	int		len_buffer;
-	int		n;
-	int		resized_len;
-
-	len_buffer = ft_strlen(buffer);
-	resized_len = len_buffer + BUFFER_SIZE + 1;
-	resized_buffer = (char *)malloc(sizeof(char) * resized_len);
-	n = 0;
-	while (n < len_buffer)
-	{
-		resized_buffer[n] = buffer[n];
-		n++;
-	}
-	while (n < len_buffer + BUFFER_SIZE + 1)
-	{
-		resized_buffer[n] = '\0';
-		n++;
-	}
-	free(buffer);
-	return (resized_buffer);
+	line[i] = '\0';
+	return (line);
 }
