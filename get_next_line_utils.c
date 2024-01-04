@@ -6,12 +6,10 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:33:15 by robernar          #+#    #+#             */
-/*   Updated: 2023/12/22 06:29:20 by robernar         ###   ########.fr       */
+/*   Updated: 2024/01/04 06:39:33 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-
-
 
 int	ft_strlen(char *str)
 {

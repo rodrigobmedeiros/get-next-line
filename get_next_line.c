@@ -6,7 +6,7 @@
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 06:31:27 by robernar          #+#    #+#             */
-/*   Updated: 2024/01/03 05:22:37 by robernar         ###   ########.fr       */
+/*   Updated: 2024/01/04 07:39:39 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -77,16 +77,16 @@ static char	*remove_extracted_line(char *buffer, int len)
 static char	*extract_line(char *str, int nb_read)
 {
 	if (nb_read == 0)
-		return extract_line_with_no_break(str);
+		return (extract_line_with_no_break(str));
 	return (extract_line_with_break(str));
 }
 
 char	*get_next_line(int fd)
 {
-	int		nb_read;
-	static char	*buffer;
+	int			nb_read;
+	int			len_line;
 	char		*line;
-	int		len_line;
+	static char	*buffer;
 
 	nb_read = 1;
 	line = "";
@@ -109,20 +109,3 @@ char	*get_next_line(int fd)
 		free(buffer);
 	return (NULL);
 }
-
-/*int main()
-{
-	int	fd;
-	char	*str;
-
-	fd = open("41_no_nl", O_RDONLY);
-	str = get_next_line(fd);
-	if (!str)
-		printf("(null)\n");
-	else
-	{
-		printf("%s\n", str);
-		free(str);
-	}
-	close(fd);
-}*/
