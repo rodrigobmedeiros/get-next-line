@@ -60,3 +60,29 @@ char	*extract_line_with_no_break(char *str)
 	line[i] = '\0';
 	return (line);
 }
+
+char	*resize_buffer(char *buffer)
+{
+	char	*resized_buffer;
+	int		len_buffer;
+	int		n;
+	int		resized_len;
+
+	len_buffer = ft_strlen(buffer);
+	resized_len = len_buffer + BUFFER_SIZE + 1;
+	resized_buffer = (char *)malloc(sizeof(char) * resized_len);
+	n = 0;
+	while (n < len_buffer)
+	{
+		resized_buffer[n] = buffer[n];
+		n++;
+	}
+	while (n < len_buffer + BUFFER_SIZE + 1)
+	{
+		resized_buffer[n] = '\0';
+		n++;
+	}
+	if (buffer)
+		free(buffer);
+	return (resized_buffer);
+}

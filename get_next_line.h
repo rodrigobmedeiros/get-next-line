@@ -19,8 +19,9 @@
 # endif
 
 int		ft_strlen(char *str);
-char	*get_next_line(int fd);
 char	*extract_line_with_break(char *str);
 char	*extract_line_with_no_break(char *str);
+char	*get_next_line(int fd);
+char	*resize_buffer(char *buffer);
 
 #endif

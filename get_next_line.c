@@ -30,31 +30,6 @@ static int	has_line(char *str, int nb_read)
 	return (0);
 }
 
-static char	*resize_buffer(char *buffer)
-{
-	char	*resized_buffer;
-	int		len_buffer;
-	int		n;
-	int		resized_len;
-
-	len_buffer = ft_strlen(buffer);
-	resized_len = len_buffer + BUFFER_SIZE + 1;
-	resized_buffer = (char *)malloc(sizeof(char) * resized_len);
-	n = 0;
-	while (n < len_buffer)
-	{
-		resized_buffer[n] = buffer[n];
-		n++;
-	}
-	while (n < len_buffer + BUFFER_SIZE + 1)
-	{
-		resized_buffer[n] = '\0';
-		n++;
-	}
-	free(buffer);
-	return (resized_buffer);
-}
-
 static char	*remove_extracted_line(char *buffer, int len)
 {
 	char	*resized_buffer;
@@ -81,6 +56,22 @@ static char	*extract_line(char *str, int nb_read)
 	return (extract_line_with_break(str));
 }
 
+static char	*extract_from_file(int fd, char *buffer, int *nb_read)
+{
+	buffer = resize_buffer(buffer);
+	*nb_read = read(fd, buffer + ft_strlen(buffer), BUFFER_SIZE);
+	return (buffer);
+}
+
+/**
+ * This is the entry point for reading a file line by line. The main 
+ * logic involves reading data from the file in chunks (BUFFER_SIZE) 
+ * and searching for a newline character ('\n'). If a newline character 
+ * is found, the data up to that point is returned as a line. If a
+ * newline character is not found, another portion of data is read 
+ * from the file. This process is repeated until the entire file has 
+ * been read.
+ */
 char	*get_next_line(int fd)
 {
 	int			nb_read;
@@ -100,12 +91,10 @@ char	*get_next_line(int fd)
 			return (line);
 		}
 		else
-		{
-			buffer = resize_buffer(buffer);
-			nb_read = read(fd, buffer + ft_strlen(buffer), BUFFER_SIZE);
-		}
+			buffer = extract_from_file(fd, buffer, &nb_read);
 	}
-	if (*buffer)
+	if (buffer)
 		free(buffer);
+	buffer = NULL;
 	return (NULL);
 }
