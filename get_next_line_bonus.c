@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: robernar <robernar@student.42.rj>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,7 +9,7 @@
 /*   Updated: 2024/01/04 07:39:39 by robernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static int	has_line(char *str, int nb_read)
 {
@@ -76,24 +76,26 @@ char	*get_next_line(int fd)
 	int			nb_read;
 	int			len_line;
 	char		*line;
-	static char	*buffer;
+	static char	*buffer[FD_MAX];
 
 	nb_read = 1;
 	line = "";
-	while ((*line == '\0' && buffer && *buffer) || (nb_read > 0 && fd >= 0))
+	if (fd < 0 || fd > FD_MAX)
+		return (NULL);
+	while ((!*line && buffer[fd] && *buffer[fd]) || (nb_read > 0))
 	{
-		len_line = has_line(buffer, nb_read);
+		len_line = has_line(buffer[fd], nb_read);
 		if (len_line)
 		{
-			line = extract_line(buffer, nb_read);
-			buffer = remove_extracted_line(buffer, len_line);
+			line = extract_line(buffer[fd], nb_read);
+			buffer[fd] = remove_extracted_line(buffer[fd], len_line);
 			return (line);
 		}
 		else
-			buffer = extract_from_file(fd, buffer, &nb_read);
+			buffer[fd] = extract_from_file(fd, buffer[fd], &nb_read);
 	}
-	if (buffer)
-		free(buffer);
-	buffer = NULL;
+	if (buffer[fd])
+		free(buffer[fd]);
+	buffer[fd] = NULL;
 	return (NULL);
 }
