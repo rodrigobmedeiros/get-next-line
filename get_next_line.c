@@ -62,15 +62,6 @@ static char	*extract_from_file(int fd, char *buffer, int *nb_read)
 	return (buffer);
 }
 
-/**
- * This is the entry point for reading a file line by line. The main 
- * logic involves reading data from the file in chunks (BUFFER_SIZE) 
- * and searching for a newline character ('\n'). If a newline character 
- * is found, the data up to that point is returned as a line. If a
- * newline character is not found, another portion of data is read 
- * from the file. This process is repeated until the entire file has 
- * been read.
- */
 char	*get_next_line(int fd)
 {
 	int			nb_read;
